@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-         Schema::create('users', function (Blueprint $table) {
-        $table->id();
-        $table->string('name')->unique();
-        $table->string('password');
-        $table->tinyInteger('role')->default(1); // <---- add this
-        $table->rememberToken();
-        $table->timestamps();
-    });
+        Schema::create('movies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->unique();
+            $table->string('description');
+            $table->integer('length');
+            $table->date('release');
+            $table->timestamps('created_at');
+        });
     }
 
     /**
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('User');
+        Schema::dropIfExists('movies');
     }
 };
