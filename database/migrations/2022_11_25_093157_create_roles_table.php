@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('mpaa_rating')->unique();
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('role');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ratings');
+        Schema::dropIfExists('roles');
     }
 };

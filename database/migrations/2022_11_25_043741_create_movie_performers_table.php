@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('movies', function (Blueprint $table) {
+        Schema::create('movie_performers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->unique();
-            $table->string('description');
-            $table->integer('length');
-            $table->date('release');
+            $table->unsignedBigInteger('movie_details_id');
+            $table->unsignedBigInteger('performer_id');
             $table->timestamps();
+            $table->index(['movie_details_id', 'performer_id']);
 
-            $table->index(['title', 'release']);
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movies');
+        Schema::dropIfExists('movie_performers');
     }
 };

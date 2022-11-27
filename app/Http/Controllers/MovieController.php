@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+
+use App\Models\Movie;
+use App\Models\Details\Movie_details;
+use App\Models\Details\Movie_genre;
+use App\Models\Details\Movie_performer;
+
+
+
+
+
+class MovieController extends Controller
+{
+    //
+
+    public function add(Request $request){
+
+        $data =$request->validate([
+            'title'=>'required|string',
+            'release'=>'required|string',
+            'length'=>'required|string',
+            'description'=>'required|string',
+            'mpaa_rating'=>'required|string',
+            'genre'=>'required|array',
+            'director'=>'required|string',
+            'performer'=>'required|array',
+            'language'=>'required|string',
+        ]);
+
+        try{
+
+            $genres_id= $this->add_to_object($data['genre'],'Genre');
+            $performers_id = $this->add_to_object($data['performer'], 'Performer');
+            $director_id = $this->add_to_object($data['director'], 'Director');
+            $language_id = $this->add_to_object($data['language'], 'Language');
+            $mpaa_rating_id = $this->add_to_object($data['mpaa_rating'], 'Mpaa_rating');
+
+            //add to movie
+            $movie = Movie::where('title', $data['title'])->firstOr(function () {
+                $movie = Movie::create($request->only('title','length','release','description'));
+                return $movie;
+            });
+        
+            // add to movie_details
+            $Movie_details = Movie_details::firstOrCreate(
+                [ 
+                    'movies_id' => $movie->id,
+                    'language_id' => $language_id[0],
+                ],
+                [
+                    'rating_id' => $mpaa_rating_id[0], 
+                    'director_id' => $director_id[0],
+            ]);
+
+            foreach ($genres_id as $id){ 
+                Movie_genre::firstOrCreate(
+                    [
+                        'movie_details_id' =>  $Movie_details->id,
+                        'genre_id' => $id,
+                    ]
+                );
+               
+            }  
+
+            foreach ($performers_id as $id){ 
+                Movie_performer::firstOrCreate(
+                    [
+                        'movie_details_id' =>  $Movie_details->id,
+                        'performer_id' => $id,
+                    ]
+                );
+            }
+          
+            return response()->json([
+                'message' => "Successfully added movie ".$movie->title." with Movie_ID ".$movie->id,
+                'success' => true
+              ], 200);
+
+        }catch(Exception $e){
+            ## for developer debugging
+            Log::error($e);
+            return response()->json([
+                'message' => 'Error on Adding Movie to Collection',
+                'success' => false
+              ], 500);
+
+        }
+
+      
+    }
+
+    // apply to multiple model beware on changing this 
+    private function add_to_object($objects,$name){
+        $object_id = array();
+        $model = 'App\Models\\'.$name;
+        collect($objects)->each(function ($item)  use (&$object_id, $model){
+            $object = $model::where('name', $item)->first();
+            if(!$object) {
+                $object = $model::Create([
+                    'name' => ucfirst($item),
+                ]);
+            }
+            array_push($object_id,$object->id);
+        });
+
+        return $object_id;
+
+    }
+
+   private function add_movie($movie){
+
+   }
+}

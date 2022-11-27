@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('movies', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title')->unique();
-            $table->string('description');
-            $table->integer('length');
-            $table->date('release');
+        Schema::create('mpaa_ratings', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
             $table->timestamps();
-
-            $table->index(['title', 'release']);
         });
     }
 
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movies');
+        Schema::dropIfExists('mpaa_ratings');
     }
 };

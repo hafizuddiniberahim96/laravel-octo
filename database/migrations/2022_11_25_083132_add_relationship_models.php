@@ -13,11 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
+        //
     }
 
     /**
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('languages');
+        //
     }
 };
