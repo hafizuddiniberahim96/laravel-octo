@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('movie_genres', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('movie_details_id');
+            $table->unsignedBigInteger('movie_collections_id');
             $table->unsignedBigInteger('genre_id');
             $table->timestamps();
 
-            $table->index(['movie_details_id', 'genre_id']);
+            $table->index(['movie_collections_id', 'genre_id']);
         });
     }
 

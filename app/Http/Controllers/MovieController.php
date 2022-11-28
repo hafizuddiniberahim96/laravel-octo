@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 use App\Models\Movie;
-use App\Models\Details\Movie_details;
+use App\Models\Details\Movie_collections;
 use App\Models\Details\Movie_genre;
 use App\Models\Details\Movie_performer;
 
@@ -32,6 +32,7 @@ class MovieController extends Controller
             'language'=>'required|string',
         ]);
 
+
         try{
 
             $genres_id= $this->add_to_object($data['genre'],'Genre');
@@ -41,13 +42,12 @@ class MovieController extends Controller
             $mpaa_rating_id = $this->add_to_object($data['mpaa_rating'], 'Mpaa_rating');
 
             //add to movie
-            $movie = Movie::where('title', $data['title'])->firstOr(function () {
+            $movie = Movie::where('title', $data['title'])->firstOr(function () use ($request) {
                 $movie = Movie::create($request->only('title','length','release','description'));
                 return $movie;
             });
-        
-            // add to movie_details
-            $Movie_details = Movie_details::firstOrCreate(
+            // add to Movie_collections
+            $Movie_collections = Movie_collections::firstOrCreate(
                 [ 
                     'movies_id' => $movie->id,
                     'language_id' => $language_id[0],
@@ -60,7 +60,7 @@ class MovieController extends Controller
             foreach ($genres_id as $id){ 
                 Movie_genre::firstOrCreate(
                     [
-                        'movie_details_id' =>  $Movie_details->id,
+                        'movie_collections_id' =>  $Movie_collections->id,
                         'genre_id' => $id,
                     ]
                 );
@@ -70,7 +70,7 @@ class MovieController extends Controller
             foreach ($performers_id as $id){ 
                 Movie_performer::firstOrCreate(
                     [
-                        'movie_details_id' =>  $Movie_details->id,
+                        'movie_collections_id' =>  $Movie_collections->id,
                         'performer_id' => $id,
                     ]
                 );

@@ -5,7 +5,7 @@ namespace App\Models\Details;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Movie_details extends Model
+class Movie_collections extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id';
