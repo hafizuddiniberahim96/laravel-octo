@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\GenreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,11 +40,22 @@ Route::middleware('custom_auth')
     
     Route::middleware('auth:sanctum')
             ->group(function () {
+
         Route::controller(MovieController::class)
             ->prefix('/movies')
             ->group(function () {
-                Route::post('/add_movie','add')->name('movies.add');
+                Route::post('/add_movie','add')->name('post.movies.add');
+                Route::get('/new_movies','new_movie')->name('get.movies.new');
             });
+
+        Route::controller(GenreController::class)
+        ->prefix('/genres')
+        ->group(function () {
+            Route::get('/genre','get_movie')->name('get.genres.get_movie');
+        });
+        
+
+
         
 
     });

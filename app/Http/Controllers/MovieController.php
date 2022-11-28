@@ -9,7 +9,7 @@ use App\Models\Movie;
 use App\Models\Details\Movie_collections;
 use App\Models\Details\Movie_genre;
 use App\Models\Details\Movie_performer;
-
+use Carbon\Carbon;
 
 
 
@@ -112,7 +112,32 @@ class MovieController extends Controller
 
     }
 
-   private function add_movie($movie){
+   public function new_movie(Request $request){
 
+        try{
+
+            $date = Carbon::parse('2020-09-18');
+            $movies = Movie_collections::find(1)->movie()->whereDate('release',$date)->get();
+
+            $data = collect($movies)->map(function($movie){
+                return [
+                    'Movie_ID'  => $movie->id,
+                    'Overall_rating' => 10,
+                    'Title' => $movie->title,
+                    'Description' => $movie->description
+                ];
+            });
+
+            return response()->json([
+                'data' => $data
+            ], 200);
+
+        }catch(Exception $e){
+            Log::error($e);
+            return response()->json([
+                'message' => 'Error on retrieving Movie to Collection',
+                'success' => false
+            ], 500);
+        }
    }
 }

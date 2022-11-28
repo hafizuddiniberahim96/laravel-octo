@@ -4,6 +4,8 @@ namespace App\Models\Details;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
 
 class Movie_collections extends Model
 {
@@ -13,9 +15,9 @@ class Movie_collections extends Model
 
 
 
-    public function movies()
+    public function movie()
     {
-        return $this->belongsTo('movies', 'movies_id', 'id');
+        return $this->hasOne('App\Models\Movie','id');
     }
 
     public function mpaa_rating(){

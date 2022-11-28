@@ -10,4 +10,10 @@ class Movie_genre extends Model
     use HasFactory;
     protected $fillable = ['movie_collections_id', 'genre_id'];
 
+
+
+    public function genres(){
+        return $this->hasOne('App\Models\Genre', 'id');
+
+    }
 }
