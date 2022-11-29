@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\PerformerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,12 @@ Route::middleware('custom_auth')
         ->prefix('/genres')
         ->group(function () {
             Route::get('/genre','get_movie')->name('get.genres.get_movie');
+        });
+
+        Route::controller(PerformerController::class)
+        ->prefix('/performers')
+        ->group(function () {
+            Route::get('/search_performer','get_movie')->name('get.perfomers.get_movie');
         });
         
 

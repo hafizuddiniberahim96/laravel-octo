@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
+
 use Illuminate\Http\Request;
 use App\Models\Details\Movie_collections;
 use App\Models\Details\Movie_genre;
@@ -13,8 +16,13 @@ class GenreController extends Controller
     //
 
     public function get_movie(Request $request){
-        $genre = 'comedy';
+
+        $data =$request->validate([
+            'genre'=>'required|string',
+        ]);
+
         try{
+            $genre = $data['genre'];
             $movies = Movie_genre::whereHas('genres', function ($query) use ($genre){
                 return $query->where('name',ucfirst($genre));
             })->get();

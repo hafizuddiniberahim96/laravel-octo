@@ -10,4 +10,8 @@ class Movie_performer extends Model
     use HasFactory;
     protected $fillable = ['movie_collections_id', 'performer_id'];
 
+    public function performers(){
+        return $this->hasOne('App\Models\Performer','id');
+    }
+
 }

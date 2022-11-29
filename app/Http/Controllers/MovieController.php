@@ -79,7 +79,7 @@ class MovieController extends Controller
             return response()->json([
                 'message' => "Successfully added movie ".$movie->title." with Movie_ID ".$movie->id,
                 'success' => true
-              ], 200);
+            ], 200);
 
         }catch(Exception $e){
             ## for developer debugging
@@ -94,32 +94,22 @@ class MovieController extends Controller
       
     }
 
-    // apply to multiple model beware on changing this 
-    private function add_to_object($objects,$name){
-        $object_id = array();
-        $model = 'App\Models\\'.$name;
-        collect($objects)->each(function ($item)  use (&$object_id, $model){
-            $object = $model::where('name', $item)->first();
-            if(!$object) {
-                $object = $model::Create([
-                    'name' => ucfirst($item),
-                ]);
-            }
-            array_push($object_id,$object->id);
-        });
+    public function new_movie(Request $request){
 
-        return $object_id;
-
-    }
-
-   public function new_movie(Request $request){
+            $data =$request->validate([
+                'r_date'=>'required|string',
+            ]);
 
         try{
 
-            $date = Carbon::parse('2020-09-18');
-            $movies = Movie_collections::find(1)->movie()->whereDate('release',$date)->get();
+            $date = Carbon::parse($data['r_date']);
+            $movies = Movie_collections::whereHas('movie', function ($query) use ($date){
+                return $query->where('release',$date);
+            })->get();
 
-            $data = collect($movies)->map(function($movie){
+            
+            $data = collect($movies)->map(function($movie_collect){
+                $movie = $movie_collect->movie;
                 return [
                     'Movie_ID'  => $movie->id,
                     'Overall_rating' => 10,
@@ -140,4 +130,24 @@ class MovieController extends Controller
             ], 500);
         }
    }
+
+    // apply to multiple model beware on changing this 
+    private function add_to_object($objects,$name){
+        $object_id = array();
+        $model = 'App\Models\\'.$name;
+        collect($objects)->each(function ($item)  use (&$object_id, $model){
+            $object = $model::where('name', $item)->first();
+            if(!$object) {
+                $object = $model::Create([
+                    'name' => ucfirst($item),
+                ]);
+            }
+            array_push($object_id,$object->id);
+        });
+
+        return $object_id;
+
+    }
+
+   
 }
