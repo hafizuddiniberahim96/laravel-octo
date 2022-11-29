@@ -14,6 +14,7 @@ class AuthController extends Controller
     private $role = 'User';
     //
     public function register(Request $request){
+        
    
         $post_data = $request->validate([
             'name'=>'required|string',
@@ -32,7 +33,6 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
         ]);
-        #1|pnSgfqWL2v87wMzGpFJLBI5McJABgSYm6Y46khgu
     }
     
     public function login(Request $request){

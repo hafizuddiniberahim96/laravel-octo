@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PerformerController;
+use App\Http\Controllers\TheaterController;
 
 
 /*
@@ -60,6 +61,15 @@ Route::middleware('custom_auth')
         ->prefix('/performers')
         ->group(function () {
             Route::get('/search_performer','get_movie')->name('get.perfomers.get_movie');
+        });
+
+        Route::controller(TheaterController::class)
+        ->prefix('/theaters')
+        ->group(function () {
+            Route::post('/add','add')->name('post.theaters.theaters');
+            Route::get('/specific_movie_theater','get_movie')->name('get.theaters.get_movie');
+            Route::post('/timeslot','add_movie')->name('post.theaters.timeslot');
+
         });
         
 

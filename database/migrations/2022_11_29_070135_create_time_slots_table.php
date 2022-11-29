@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('movie_collections_id');
+            $table->unsignedBigInteger('theater_id');
+            $table->dateTime('time_start');
+            $table->dateTime('time_end');
             $table->timestamps();
         });
     }
