@@ -13,7 +13,12 @@ class Movie_genre extends Model
 
 
     public function genres(){
-        return $this->hasOne('App\Models\Genre', 'id');
-
+        return $this->hasOne('App\Models\Genre', 'id','genre_id');
     }
+
+    public function movies(){
+        return $this->hasMany(Movie_collections::class,'id','movie_collections_id');
+    }
+
+    
 }

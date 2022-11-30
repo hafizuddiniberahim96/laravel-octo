@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('movie_collections_id');
             $table->unsignedBigInteger('theater_id');
+            $table->unsignedBigInteger('room_id');
             $table->dateTime('time_start');
             $table->dateTime('time_end');
             $table->timestamps();

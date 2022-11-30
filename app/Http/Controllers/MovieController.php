@@ -103,13 +103,13 @@ class MovieController extends Controller
         try{
 
             $date = Carbon::parse($data['r_date']);
-            $movies = Movie_collections::whereHas('movie', function ($query) use ($date){
+            $movies = Movie_collections::whereHas('info', function ($query) use ($date){
                 return $query->where('release',$date);
             })->get();
 
             
             $data = collect($movies)->map(function($movie_collect){
-                $movie = $movie_collect->movie;
+                $movie = $movie_collect->info;
                 return [
                     'Movie_ID'  => $movie->id,
                     'Overall_rating' => 10,

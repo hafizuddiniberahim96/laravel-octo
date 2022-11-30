@@ -11,8 +11,14 @@ class Theater extends Model
     protected $fillable = ['name'];
 
 
-
+   
     public function time_slots(){
-       return $this->hasMany('App\Models\Time_slot','theater_id');
+       return $this->hasMany(Time_slot::class,'theater_id');
     }
+
+    public function rooms(){
+        return $this->hasMany(Theater_room::class,'theater_id');
+
+    }
+
 }

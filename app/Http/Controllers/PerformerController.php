@@ -27,10 +27,10 @@ class PerformerController extends Controller
             })->get();
 
             $data =  collect($performers)->map(function($performer){
-                $res =  Movie_collections::find($performer->movie_collections_id)->movie()->first();
+                $res =  Movie_collections::find($performer->movie_collections_id)->info()->first();
                  return [
                     'Movie_ID'  => $res->id,
-                    'Overall_rating' => 10,
+                    'Overall_rating' => $performer->movies()->first()->ratings()->avg('rating'),
                     'Title' => $res->title,
                     'Description' => $res->description
                 ];

@@ -11,7 +11,11 @@ class Movie_performer extends Model
     protected $fillable = ['movie_collections_id', 'performer_id'];
 
     public function performers(){
-        return $this->hasOne('App\Models\Performer','id');
+        return $this->hasOne('App\Models\Performer','id','performer_id');
+    }
+
+    public function movies(){
+        return $this->hasMany(Movie_collections::class,'id','movie_collections_id');
     }
 
 }

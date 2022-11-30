@@ -15,27 +15,32 @@ class Movie_collections extends Model
 
 
 
-    public function movie()
+    public function info()
     {
-        return $this->hasOne('App\Models\Movie','id');
+        return $this->hasOne('App\Models\Movie','id','movies_id');
     }
 
     public function mpaa_rating(){
-        return $this->hasOne('mpaa_ratings', 'rating_id');
+        return $this->hasOne('App\Models\Mpaa_rating','id','rating_id');
 
     }
 
     public function director(){
-        return $this->hasOne('directors', 'director_id');
+        return $this->hasOne('App\Models\Director','id','director_id');
 
     }
 
     public function genres(){
-        return $this->hasMany('movie_genre', 'movies_id');
+        return $this->hasMany('App\Models\Details\Movie_genre', 'movies_id');
     }
 
     public function performers(){
         return $this->hasMany('movie_performer', 'movies_id');
+    }
+
+    public function ratings(){
+        return $this->hasMany('App\Models\Rating', 'movie_collections_id');
+
     }
 
 }

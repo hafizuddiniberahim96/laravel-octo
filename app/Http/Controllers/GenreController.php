@@ -23,19 +23,20 @@ class GenreController extends Controller
 
         try{
             $genre = $data['genre'];
-            $movies = Movie_genre::whereHas('genres', function ($query) use ($genre){
+            $movies_genre = Movie_genre::whereHas('genres', function ($query) use ($genre){
                 return $query->where('name',ucfirst($genre));
             })->get();
-    
-            $data =  collect($movies)->map(function($movie){
-                $res =  Movie_collections::find($movie->id)->movie()->first();
+
+            $data =  collect($movies_genre)->map(function($movie){
+                $res =  Movie_collections::find($movie->movie_collections_id)->info()->first();
                  return [
                     'Movie_ID'  => $res->id,
-                    'Overall_rating' => 10,
+                    'Overall_rating' => $movie->movies()->first()->ratings()->avg('rating'),
                     'Title' => $res->title,
                     'Description' => $res->description
                 ];
             });
+
             
             return response()->json([
                 'data' => $data

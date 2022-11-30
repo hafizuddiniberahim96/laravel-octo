@@ -21,9 +21,9 @@ class Movie extends Model
     ];
 
 
-    public function movie()
+    public function details()
     {
-        return $this->belongsTo('Movie_collections','movie_id');
+        return $this->belongsTo('App\Models\Details\Movie_collections','movies_id');
     }
 
  

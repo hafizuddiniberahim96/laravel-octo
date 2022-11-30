@@ -7,7 +7,8 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\TheaterController;
-
+use App\Http\Controllers\TimeslotController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,16 +67,23 @@ Route::middleware('custom_auth')
         Route::controller(TheaterController::class)
         ->prefix('/theaters')
         ->group(function () {
-            Route::post('/add','add')->name('post.theaters.theaters');
+            Route::post('/add','add')->name('post.theaters.add.theaters');
+            Route::post('/add_room','add_rooms')->name('post.theaters.add.rooms');
             Route::get('/specific_movie_theater','get_movie')->name('get.theaters.get_movie');
             Route::post('/timeslot','add_movie')->name('post.theaters.timeslot');
+        });
 
+        Route::controller(TimeslotController::class)
+        ->prefix('/timeslots')
+        ->group(function () {
+            Route::get('/timeslot','get_movie')->name('get.timeslot.get_movie');
         });
         
-
-
-        
-
+        Route::controller(RatingController::class)
+        ->prefix('/ratings')
+        ->group(function () {
+            Route::post('/give_rating','add')->name('post.rating.give_rating');
+        });
     });
 
 });
